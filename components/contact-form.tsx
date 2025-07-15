@@ -273,8 +273,56 @@ export function ContactForm({
     return selectedItems
   }
 
+  const calculateBonusAmounts = () => {
+    let totalBonusAmount = 0
+    let baseAmountForPercentage = 0
+
+    // Calculate base amount (non-bonus items) for percentage calculation
+    calculatorData.allItems.forEach((item) => {
+      const selection = calculatorData.selections[item.id]
+
+      if (item.name.includes("Bonus") || item.name.includes("bonus")) {
+        return // Skip bonus items for base calculation
+      }
+
+      const shouldIncludeQuantityOnly =
+        item.isQuantityOnly &&
+        item.requiresParent &&
+        calculatorData.selections[item.requiresParent]?.selected &&
+        selection?.quantity > 0
+
+      if (selection?.selected || shouldIncludeQuantityOnly) {
+        const quantity = selection?.quantity || 1
+        baseAmountForPercentage += calculateItemAmount(item, quantity)
+      }
+    })
+
+    // Calculate bonus amounts
+    calculatorData.allItems.forEach((item) => {
+      const selection = calculatorData.selections[item.id]
+
+      if (selection?.selected && (item.name.includes("Bonus") || item.name.includes("bonus"))) {
+        if (item.unit === "percent" && item.percentage) {
+          const bonusAmount = baseAmountForPercentage * (item.percentage / 100)
+          totalBonusAmount += bonusAmount
+        } else if (item.unit === "fixed") {
+          totalBonusAmount += item.price
+        } else {
+          const quantity = selection.quantity || 1
+          totalBonusAmount += calculateItemAmount(item, quantity)
+        }
+      }
+    })
+
+    return {
+      totalBonusAmount,
+      baseAmountForPercentage,
+    }
+  }
+
   const generateItemsFormatted = () => {
     const formattedItems: string[] = []
+    const bonusInfo = calculateBonusAmounts()
 
     calculatorData.allItems.forEach((item) => {
       const selection = calculatorData.selections[item.id]
@@ -288,8 +336,22 @@ export function ContactForm({
 
       if (selection?.selected || shouldIncludeQuantityOnly) {
         const quantity = selection.quantity || 1
-        const grantAmount = calculateItemAmount(item, quantity)
-        const surchargeAmount = calculateItemSurcharge(item, quantity)
+        let grantAmount = 0
+        let surchargeAmount = 0
+
+        // Special handling for percentage bonuses
+        if (
+          item.unit === "percent" &&
+          item.percentage &&
+          (item.name.includes("Bonus") || item.name.includes("bonus"))
+        ) {
+          grantAmount = bonusInfo.baseAmountForPercentage * (item.percentage / 100)
+          surchargeAmount = 0
+        } else {
+          grantAmount = calculateItemAmount(item, quantity)
+          surchargeAmount = calculateItemSurcharge(item, quantity)
+        }
+
         const totalAmount = grantAmount + surchargeAmount
         const unitDisplay = getUnitDisplay(item.unit)
 
@@ -338,6 +400,7 @@ export function ContactForm({
 
     try {
       const itemsFormatted = generateItemsFormatted()
+      const bonusInfo = calculateBonusAmounts()
 
       const calculationData = {
         email: formData.email,
@@ -358,11 +421,16 @@ export function ContactForm({
         calculatorTotals: calculatorData.totals,
         implementationSelections: calculatorData.implementationSelections,
         itemsFormatted: itemsFormatted,
+        bonusInfo: {
+          totalBonusAmount: bonusInfo.totalBonusAmount,
+          bonusAmountFormatted: formatAmount(bonusInfo.totalBonusAmount),
+        },
         timestamp: new Date().toISOString(),
       }
 
       console.log("Sending payload:", payload)
       console.log("Formatted items:", itemsFormatted)
+      console.log("Bonus info:", bonusInfo)
 
       const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/15921578/ubelpz9/"
 
