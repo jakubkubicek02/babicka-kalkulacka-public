@@ -1,0 +1,414 @@
+{
+  "categories": [
+    {
+      "id": "zatepleni-fasady",
+      "name": "Zateplení fasády",
+      "items": [
+        {
+          "id": "fasada-polystyren",
+          "name": "Fasáda polystyren",
+          "price": 1300,
+          "unit": "m2",
+          "hasQuantity": true
+        },
+        {
+          "id": "fasada-mineralni-vata",
+          "name": "Fasáda Minerální vata",
+          "price": 1300,
+          "unit": "m2",
+          "hasQuantity": true
+        }
+      ]
+    },
+    {
+      "id": "zatepleni-strechy",
+      "name": "Zateplení střechy",
+      "items": [
+        {
+          "id": "strecha-bez-zaklopu",
+          "name": "Střecha bez záklopu",
+          "price": 1300,
+          "unit": "m2",
+          "hasQuantity": true
+        },
+        {
+          "id": "strecha-se-zaklopem",
+          "name": "Střecha se záklopem",
+          "price": 1300,
+          "unit": "m2",
+          "hasQuantity": true
+        }
+      ]
+    },
+    {
+      "id": "zatepleni-stropu",
+      "name": "Zateplení stropu pod nevytápěnou půdou",
+      "items": [
+        {
+          "id": "foukana-izolace",
+          "name": "Foukaná izolace",
+          "price": 500,
+          "unit": "m2",
+          "hasQuantity": true
+        }
+      ]
+    },
+    {
+      "id": "zatepleni-podlahy",
+      "name": "Zateplení podlahy",
+      "items": [
+        {
+          "id": "konstrukce-k-zemini",
+          "name": "Konstrukce k zemině",
+          "price": 1700,
+          "unit": "m2",
+          "hasQuantity": true
+        }
+      ]
+    },
+    {
+      "id": "vymena-oken",
+      "name": "Výměna oken a dveří",
+      "items": [
+        {
+          "id": "vymena-oken-dveri",
+          "name": "Výměna oken a dveří",
+          "price": 4900,
+          "unit": "m2",
+          "hasQuantity": true
+        }
+      ]
+    },
+    {
+      "id": "venkovni-zaluzie",
+      "name": "Venkovní žaluzie",
+      "items": [
+        {
+          "id": "stinnici-technika",
+          "name": "Stínící technika",
+          "price": 1500,
+          "unit": "fixed",
+          "hasQuantity": false
+        }
+      ],
+      "subSections": [
+        {
+          "id": "zaluzie-doplnujici",
+          "name": "Doplňující informace",
+          "items": [
+            {
+              "id": "velikost-oken",
+              "name": "Velikost oken (m²)",
+              "price": 3000,
+              "unit": "m2",
+              "hasQuantity": true,
+              "step": 1,
+              "isQuantityOnly": true,
+              "requiresParent": "stinnici-technika"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tepelne-cerpadlo",
+      "name": "Tepelné čerpadlo",
+      "items": [
+        {
+          "id": "tc-8kw",
+          "name": "8kW",
+          "price": 75000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "tc-vykon-group"
+        },
+        {
+          "id": "tc-12kw",
+          "name": "12kW",
+          "price": 75000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "tc-vykon-group"
+        },
+        {
+          "id": "tc-16kw",
+          "name": "16kW",
+          "price": 75000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "tc-vykon-group"
+        },
+        {
+          "id": "tc-22kw",
+          "name": "22kW",
+          "price": 75000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "tc-vykon-group"
+        }
+      ],
+      "subSections": [
+        {
+          "id": "tc-doplnujici",
+          "name": "Doplňující možnosti",
+          "items": [
+            {
+              "id": "tc-pouze-vytapeni",
+              "name": "Pouze vytápění",
+              "price": 0,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "radioGroup": "tc-funkce-group"
+            },
+            {
+              "id": "tc-vytapeni-ohrev",
+              "name": "Vytápění + ohřev vody",
+              "price": 15000,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "radioGroup": "tc-funkce-group"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fv-ohrev-vody",
+      "name": "Fotovoltaický ohřev vody",
+      "items": [
+        {
+          "id": "fv-ohrev-rovna",
+          "name": "Mám rovnou střechu",
+          "price": 35000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "fv-strecha-group"
+        },
+        {
+          "id": "fv-ohrev-sikma",
+          "name": "Mám šikmou střechu",
+          "price": 35000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "fv-strecha-group"
+        }
+      ],
+      "subSections": [
+        {
+          "id": "fv-doplnujici",
+          "name": "Doplňující možnosti",
+          "items": [
+            {
+              "id": "fv-mam-bojler",
+              "name": "Mám elektrický bojler",
+              "price": 0,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "radioGroup": "fv-bojler-group"
+            },
+            {
+              "id": "fv-nemam-bojler",
+              "name": "Nemám elektrický bojler",
+              "price": 13552,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "radioGroup": "fv-bojler-group"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fve",
+      "name": "Fotovoltaika",
+      "maxLimit": 140000,
+      "items": [
+        {
+          "id": "fv-54kwp",
+          "name": "5,4 kWp - nejlevnější sestava",
+          "price": 100000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "fve-panely-group"
+        },
+        {
+          "id": "fv-72kwp",
+          "name": "7,2 kWp - zlatá střední cesta",
+          "price": 100000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "fve-panely-group"
+        },
+        {
+          "id": "fv-99kwp",
+          "name": "9,9 kWp - doporučeno",
+          "price": 100000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "fve-panely-group"
+        },
+        {
+          "id": "fv-144kwp",
+          "name": "14,4 kWp - pro velké domy",
+          "price": 100000,
+          "unit": "fixed",
+          "hasQuantity": false,
+          "radioGroup": "fve-panely-group"
+        }
+      ],
+      "subSections": [
+        {
+          "id": "fve-doplnujici",
+          "name": "Doplňující možnosti",
+          "items": [
+            {
+              "id": "fv-zapojeni",
+              "name": "Zapojení do sítě",
+              "price": 40000,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "autoSelect": true
+            },
+            {
+              "id": "dobijeci-stanice",
+              "name": "Dobíjecí stanice pro elektromobil",
+              "price": 15000,
+              "unit": "body",
+              "hasQuantity": true,
+              "max": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rizene-vetrani",
+      "name": "Řízené větrání",
+      "items": [
+        {
+          "id": "rekuperace",
+          "name": "Rekuperace",
+          "price": 90000,
+          "unit": "fixed",
+          "hasQuantity": false
+        }
+      ]
+    },
+    {
+      "id": "destova-voda",
+      "name": "Dešťová voda",
+      "items": [
+        {
+          "id": "zpracovani-destove-vody",
+          "name": "Zpracování dešťové vody",
+          "price": 20000,
+          "unit": "fixed",
+          "hasQuantity": false
+        },
+        {
+          "id": "velikost-nadrze",
+          "name": "Velikost nádrže",
+          "price": 3000,
+          "unit": "m3",
+          "hasQuantity": true,
+          "step": 0.1,
+          "isQuantityOnly": true,
+          "requiresParent": "zpracovani-destove-vody"
+        }
+      ]
+    },
+    {
+      "id": "bonusy",
+      "name": "Bonusy",
+      "isBonus": true,
+      "items": [],
+      "subSections": [
+        {
+          "id": "automaticke-bonusy",
+          "name": "Automatické bonusy",
+          "items": [
+            {
+              "id": "bonus-projektova-dokumentace",
+              "name": "Bonus na projektovou dokumentaci 50 000 Kč",
+              "price": 50000,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "isAutomatic": true,
+              "alwaysSelected": true
+            },
+            {
+              "id": "bonus-zatepleni-fve",
+              "name": "Zateplení + FVE (jakákoliv)",
+              "price": 50000,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "requiresCondition": true,
+              "isAutomatic": true
+            },
+            {
+              "id": "bonus-zatepleni-teplo",
+              "name": "Zateplení + zdroj tepla",
+              "price": 50000,
+              "unit": "fixed",
+              "hasQuantity": false,
+              "requiresCondition": true,
+              "isAutomatic": true
+            }
+          ]
+        },
+        {
+          "id": "manualni-bonusy",
+          "name": "Manuální bonusy",
+          "items": [
+            {
+              "id": "bonus-region",
+              "name": "Bonus pro vybrané regiony a obce (5 % z celkové výše podpory)",
+              "price": 0,
+              "unit": "percent",
+              "hasQuantity": false,
+              "percentage": 5
+            }
+          ]
+        },
+        {
+          "id": "rodinny-bonus",
+          "name": "Rodinný bonus",
+          "items": [
+            {
+              "id": "bonus-dite-neopatrene",
+              "name": "Rodinný bonus za neopatřené dítě",
+              "price": 50000,
+              "unit": "body",
+              "hasQuantity": true,
+              "max": 10
+            },
+            {
+              "id": "bonus-dite-stridava",
+              "name": "Rodinný bonus za dítě ve střídavé péči",
+              "price": 25000,
+              "unit": "body",
+              "hasQuantity": true,
+              "max": 10
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "regions": [
+    "Praha",
+    "Středočeský kraj",
+    "Jihočeský kraj",
+    "Plzeňský kraj",
+    "Karlovarský kraj",
+    "Ústecký kraj",
+    "Liberecký kraj",
+    "Královéhradecký kraj",
+    "Pardubický kraj",
+    "Vysočina",
+    "Jihomoravský kraj",
+    "Olomoucký kraj",
+    "Zlínský kraj",
+    "Moravskoslezský kraj"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "surcharges": {
+    "Fasáda polystyren": 1298,
+    "Fasáda Minerální vata": 1701,
+    "Střecha bez záklopu": 380,
+    "Střecha se záklopem": 1276,
+    "Foukaná izolace": 350,
+    "Konstrukce k zemině": 764,
+    "Výměna oken a dveří": 2604,
+    "Stínící technika": 1748,
+    "Velikost oken (m²)": 0,
+    "8kW": 177000,
+    "12kW": 216200,
+    "16kW": 244200,
+    "22kW": 272200,
+    "Mám rovnou střechu": 52584,
+    "Mám šikmou střechu": 45976,
+    "Rekuperace": 145200,
+    "Zpracování dešťové vody": 0,
+    "Velikost nádrže": 0,
+    "5,4 kWp - nejlevnější sestava": 151200,
+    "7,2 kWp - zlatá střední cesta": 196000,
+    "9,9 kWp - doporučeno": 218400,
+    "14,4 kWp - pro velké domy": 319200,
+    "Zapojení do sítě": 0,
+    "Dobíjecí stanice pro elektromobil": 0,
+    "Pouze vytápění": 0,
+    "Vytápění + ohřev vody": 0,
+    "Mám elektrický bojler": 0,
+    "Nemám elektrický bojler": 0
+  }
+}

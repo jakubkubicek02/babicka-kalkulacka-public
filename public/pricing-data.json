@@ -1,0 +1,217 @@
+{
+  "pricingData": {
+    "Fasáda polystyren": {
+      "grant": 1300,
+      "priceUnder400k": 2800,
+      "surchargeUnder400k": 1500,
+      "priceOver400k": 2599,
+      "surchargeOver400k": 1298
+    },
+    "Fasáda Minerální vata": {
+      "grant": 1300,
+      "priceUnder400k": 3001,
+      "surchargeUnder400k": 1701,
+      "priceOver400k": 3651,
+      "surchargeOver400k": 2351
+    },
+    "Fasáda difusně otevřené": {
+      "grant": 1300,
+      "priceUnder400k": 3001,
+      "surchargeUnder400k": 1701,
+      "priceOver400k": 3651,
+      "surchargeOver400k": 2351
+    },
+    "Střecha bez záklopu": {
+      "grant": 1300,
+      "priceUnder400k": 1680,
+      "surchargeUnder400k": 380,
+      "priceOver400k": 2030,
+      "surchargeOver400k": 730
+    },
+    "Střecha se záklopem": {
+      "grant": 1300,
+      "priceUnder400k": 2576,
+      "surchargeUnder400k": 1276,
+      "priceOver400k": 2926,
+      "surchargeOver400k": 1626
+    },
+    "Strop pod nevytápěnou půdou": {
+      "grant": 500,
+      "priceUnder400k": 850,
+      "surchargeUnder400k": 350,
+      "priceOver400k": 1200,
+      "surchargeOver400k": 700
+    },
+    "Strop sklepa": {
+      "grant": 500,
+      "priceUnder400k": 850,
+      "surchargeUnder400k": 350,
+      "priceOver400k": 1200,
+      "surchargeOver400k": 700
+    },
+    "Konstrukce k zemině": {
+      "grant": 1700,
+      "priceUnder400k": 2464,
+      "surchargeUnder400k": 764,
+      "priceOver400k": 2814,
+      "surchargeOver400k": 1114
+    },
+    "Výměna oken a dveří": {
+      "grant": 4900,
+      "priceUnder400k": 7504,
+      "surchargeUnder400k": 2604,
+      "priceOver400k": 7854,
+      "surchargeOver400k": 2954
+    },
+    "Okna": {
+      "grant": 4900,
+      "priceUnder400k": 7504,
+      "surchargeUnder400k": 2604,
+      "priceOver400k": 7854,
+      "surchargeOver400k": 2954
+    },
+    "Venkovní žaluzie": {
+      "grant": 1500,
+      "priceUnder400k": 3248,
+      "surchargeUnder400k": 1748,
+      "priceOver400k": 3598,
+      "surchargeOver400k": 2098,
+      "isPerSquareMeter": true,
+      "basePrice": true
+    },
+    "Velikost oken (m²)": {
+      "grant": 0,
+      "priceUnder400k": 3248,
+      "surchargeUnder400k": 1748,
+      "priceOver400k": 3598,
+      "surchargeOver400k": 2098,
+      "isPerSquareMeter": true
+    },
+    "Pro menší domácnosti": {
+      "grant": 75000,
+      "priceUnder400k": 252000,
+      "surchargeUnder400k": 177000,
+      "priceOver400k": 302000,
+      "surchargeOver400k": 227000
+    },
+    "Do 200 m² užitné plochy": {
+      "grant": 75000,
+      "priceUnder400k": 291200,
+      "surchargeUnder400k": 216200,
+      "priceOver400k": 341200,
+      "surchargeOver400k": 266200
+    },
+    "300 m² užitné plochy a více": {
+      "grant": 75000,
+      "priceUnder400k": 319200,
+      "surchargeUnder400k": 244200,
+      "priceOver400k": 369200,
+      "surchargeOver400k": 294200
+    },
+    "Pouze vytápění": {
+      "grant": 0,
+      "priceUnder400k": 0,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 0,
+      "surchargeOver400k": 0
+    },
+    "Vytápění + ohřev vody": {
+      "grant": 15000,
+      "priceUnder400k": 15000,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 15000,
+      "surchargeOver400k": 0
+    },
+    "Mám rovnou střechu": {
+      "grant": 35000,
+      "priceUnder400k": 87584,
+      "surchargeUnder400k": 52584,
+      "priceOver400k": 102584,
+      "surchargeOver400k": 67584
+    },
+    "Mám šikmou střechu": {
+      "grant": 35000,
+      "priceUnder400k": 80976,
+      "surchargeUnder400k": 45976,
+      "priceOver400k": 95976,
+      "surchargeOver400k": 60976
+    },
+    "Mám elektrický bojler": {
+      "grant": 0,
+      "priceUnder400k": 0,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 0,
+      "surchargeOver400k": 0
+    },
+    "Nemám elektrický bojler": {
+      "grant": 13552,
+      "priceUnder400k": 13552,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 13552,
+      "surchargeOver400k": 0
+    },
+    "5 kWp - nejlevnější sestava": {
+      "grant": 100000,
+      "priceUnder400k": 251200,
+      "surchargeUnder400k": 151200,
+      "priceOver400k": 301200,
+      "surchargeOver400k": 201200
+    },
+    "7 kWp - zlatá střední cesta": {
+      "grant": 100000,
+      "priceUnder400k": 296000,
+      "surchargeUnder400k": 196000,
+      "priceOver400k": 346000,
+      "surchargeOver400k": 246000
+    },
+    "10 kWp - doporučeno": {
+      "grant": 100000,
+      "priceUnder400k": 318400,
+      "surchargeUnder400k": 218400,
+      "priceOver400k": 368400,
+      "surchargeOver400k": 268400
+    },
+    "14 kWp - pro velké domy": {
+      "grant": 100000,
+      "priceUnder400k": 419200,
+      "surchargeUnder400k": 319200,
+      "priceOver400k": 469200,
+      "surchargeOver400k": 369200
+    },
+    "Zapojení do sítě": {
+      "grant": 40000,
+      "priceUnder400k": 40000,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 40000,
+      "surchargeOver400k": 0
+    },
+    "Dobíjecí stanice pro elektromobil": {
+      "grant": 15000,
+      "priceUnder400k": 15000,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 15000,
+      "surchargeOver400k": 0
+    },
+    "Rekuperace": {
+      "grant": 90000,
+      "priceUnder400k": 235200,
+      "surchargeUnder400k": 145200,
+      "priceOver400k": 285200,
+      "surchargeOver400k": 195200
+    },
+    "Zpracování dešťové vody": {
+      "grant": 20000,
+      "priceUnder400k": 20000,
+      "surchargeUnder400k": 0,
+      "priceOver400k": 20000,
+      "surchargeOver400k": 0
+    },
+    "Velikost nádrže": {
+      "grant": 3000,
+      "priceUnder400k": 12000,
+      "surchargeUnder400k": 9000,
+      "priceOver400k": 14000,
+      "surchargeOver400k": 11000
+    }
+  }
+}
