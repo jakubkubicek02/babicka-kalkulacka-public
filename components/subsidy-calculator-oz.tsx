@@ -90,8 +90,7 @@ export function SubsidyCalculator({
   const [selections, setSelections] = useState<Selection>({})
   const [categoryTotals, setCategoryTotals] = useState<{ [key: string]: number }>({})
   const [totalGrantAmount, setTotalGrantAmount] = useState(0)
-  const [totalPriceAmount, setTotalPriceAmount] = useState(0)
-  const [totalSurcharge, setTotalSurcharge] = useState(0)
+  const [totalSurchargeAmount, setTotalSurchargeAmount] = useState(0)
   const [excessAmount, setExcessAmount] = useState(0)
   const [dataLoaded, setDataLoaded] = useState(false)
   const [implementationSelections, setImplementationSelections] = useState<{ [key: string]: boolean }>({})
@@ -249,35 +248,6 @@ export function SubsidyCalculator({
     }
   }
 
-  const calculateItemPrice = (item: SubsidyItem, quantity: number): number => {
-    const itemPricing = pricingData[item.name]
-    if (!itemPricing) {
-      return 0
-    }
-
-    const price = itemPricing.price || 0
-
-    // Special handling for venkovní žaluzie - calculate price based on window size
-    if (item.name === "Venkovní žaluzie") {
-      const windowSizeSelection = selections["velikost-oken"]
-      const windowSize = windowSizeSelection?.quantity || 0
-      if (windowSize > 0) {
-        return price * windowSize
-      }
-      return 0
-    } else if (item.name === "Velikost oken (m²)") {
-      return 0
-    }
-
-    if (item.unit === "fixed") {
-      return price
-    } else if (item.unit === "percent") {
-      return 0
-    } else {
-      return price * quantity
-    }
-  }
-
   const calculateItemSurcharge = (item: SubsidyItem, quantity: number): number => {
     const itemPricing = pricingData[item.name]
     if (!itemPricing) {
@@ -313,8 +283,7 @@ export function SubsidyCalculator({
   const updateCalculations = async () => {
     const newCategoryTotals: { [key: string]: number } = {}
     let baseGrantTotal = 0
-    let basePriceTotal = 0
-    let baseSurcharge = 0
+    let baseSurchargeTotal = 0
 
     // Calculate totals for groups and individual categories (excluding bonuses)
     data.categories.forEach((category) => {
@@ -323,13 +292,11 @@ export function SubsidyCalculator({
       if (category.isGroup && category.subCategories) {
         // Handle group categories
         let groupGrantTotal = 0
-        let groupPriceTotal = 0
-        let groupSurcharge = 0
+        let groupSurchargeTotal = 0
 
         category.subCategories.forEach((subCategory) => {
           let subCategoryGrantTotal = 0
-          let subCategoryPriceTotal = 0
-          let subCategorySurcharge = 0
+          let subCategorySurchargeTotal = 0
           const allItems = [...(subCategory.items || []), ...(subCategory.conditionalItems || [])]
 
           // Add items from subSections
@@ -348,14 +315,12 @@ export function SubsidyCalculator({
               if (parentSelected && selection?.quantity > 0) {
                 const quantity = selection.quantity
                 subCategoryGrantTotal += calculateItemAmount(item, quantity)
-                subCategoryPriceTotal += calculateItemPrice(item, quantity)
-                subCategorySurcharge += calculateItemSurcharge(item, quantity)
+                subCategorySurchargeTotal += calculateItemSurcharge(item, quantity)
               }
             } else if (selection?.selected) {
               const quantity = selection.quantity || 1
               subCategoryGrantTotal += calculateItemAmount(item, quantity)
-              subCategoryPriceTotal += calculateItemPrice(item, quantity)
-              subCategorySurcharge += calculateItemSurcharge(item, quantity)
+              subCategorySurchargeTotal += calculateItemSurcharge(item, quantity)
             }
           })
 
@@ -366,8 +331,7 @@ export function SubsidyCalculator({
 
           newCategoryTotals[subCategory.id] = subCategoryGrantTotal
           groupGrantTotal += subCategoryGrantTotal
-          groupPriceTotal += subCategoryPriceTotal
-          groupSurcharge += subCategorySurcharge
+          groupSurchargeTotal += subCategorySurchargeTotal
         })
 
         // Apply group limits (1M for Group A, 500k for Group B) - only to grants
@@ -377,13 +341,11 @@ export function SubsidyCalculator({
 
         newCategoryTotals[category.id] = groupGrantTotal
         baseGrantTotal += groupGrantTotal
-        basePriceTotal += groupPriceTotal
-        baseSurcharge += groupSurcharge
+        baseSurchargeTotal += groupSurchargeTotal
       } else {
         // Handle regular categories (non-bonus, non-group)
         let categoryGrantTotal = 0
-        let categoryPriceTotal = 0
-        let categorySurcharge = 0
+        let categorySurchargeTotal = 0
         const allItems = [...(category.items || []), ...(category.conditionalItems || [])]
 
         // Add items from subSections
@@ -402,14 +364,12 @@ export function SubsidyCalculator({
             if (parentSelected && selection?.quantity > 0) {
               const quantity = selection.quantity
               categoryGrantTotal += calculateItemAmount(item, quantity)
-              categoryPriceTotal += calculateItemPrice(item, quantity)
-              categorySurcharge += calculateItemSurcharge(item, quantity)
+              categorySurchargeTotal += calculateItemSurcharge(item, quantity)
             }
           } else if (selection?.selected) {
             const quantity = selection.quantity || 1
             categoryGrantTotal += calculateItemAmount(item, quantity)
-            categoryPriceTotal += calculateItemPrice(item, quantity)
-            categorySurcharge += calculateItemSurcharge(item, quantity)
+            categorySurchargeTotal += calculateItemSurcharge(item, quantity)
           }
         })
 
@@ -420,8 +380,7 @@ export function SubsidyCalculator({
 
         newCategoryTotals[category.id] = categoryGrantTotal
         baseGrantTotal += categoryGrantTotal
-        basePriceTotal += categoryPriceTotal
-        baseSurcharge += categorySurcharge
+        baseSurchargeTotal += categorySurchargeTotal
       }
     })
 
@@ -478,7 +437,6 @@ export function SubsidyCalculator({
 
     // Calculate bonuses separately
     let bonusGrantAmount = 0
-    let bonusPriceAmount = 0
     const bonusCategory = data.categories.find((cat) => cat.isBonus)
 
     if (bonusCategory && bonusCategory.subSections) {
@@ -488,18 +446,15 @@ export function SubsidyCalculator({
             const selection = updatedSelections[item.id]
             if (selection?.selected) {
               if (item.unit === "percent" && item.percentage) {
-                // Percentage bonuses only add to grant amount, NOT to total price
+                // Percentage bonuses only add to grant amount
                 bonusGrantAmount += baseGrantTotal * (item.percentage / 100)
-                // Don't add to bonusPriceAmount - percentage bonuses don't increase total price
               } else if (item.unit === "fixed") {
-                // Fixed bonuses add to both price and grant
+                // Fixed bonuses
                 bonusGrantAmount += item.price
-                bonusPriceAmount += item.price
               } else {
                 const quantity = selection.quantity || 1
                 const bonusAmount = calculateItemAmount(item, quantity)
                 bonusGrantAmount += bonusAmount
-                bonusPriceAmount += bonusAmount
               }
             }
           })
@@ -546,10 +501,13 @@ export function SubsidyCalculator({
       }
     })
 
+    const finalGrantAmount = baseGrantTotal + bonusGrantAmount
+    const finalSurchargeAmount = baseSurchargeTotal
+    const finalTotalAmount = finalGrantAmount + finalSurchargeAmount
+
     setCategoryTotals(newCategoryTotals)
-    setTotalGrantAmount(baseGrantTotal + bonusGrantAmount)
-    setTotalPriceAmount(basePriceTotal + bonusPriceAmount)
-    setTotalSurcharge(baseSurcharge)
+    setTotalGrantAmount(finalGrantAmount)
+    setTotalSurchargeAmount(finalSurchargeAmount)
     setExcessAmount(totalExcess)
 
     // Auto-save for logged-in users (but not new users)
@@ -558,9 +516,9 @@ export function SubsidyCalculator({
         email: userEmail,
         selections: updatedSelections,
         totals: {
-          grantAmount: baseGrantTotal + bonusGrantAmount,
-          surchargeAmount: basePriceTotal + bonusPriceAmount - (baseGrantTotal + bonusGrantAmount), // Cena - Dotace
-          finalAmount: basePriceTotal + bonusPriceAmount, // Celková cena
+          grantAmount: finalGrantAmount,
+          surchargeAmount: finalSurchargeAmount,
+          finalAmount: finalTotalAmount,
           excessAmount: totalExcess,
         },
         selectedMunicipality,
@@ -786,8 +744,8 @@ export function SubsidyCalculator({
     selections,
     totals: {
       grantAmount: totalGrantAmount,
-      surchargeAmount: totalPriceAmount - totalGrantAmount, // Doplatek = Cena - Dotace
-      finalAmount: totalPriceAmount, // Celková cena
+      surchargeAmount: totalSurchargeAmount,
+      finalAmount: totalGrantAmount + totalSurchargeAmount,
       excessAmount,
     },
     allItems,
@@ -818,8 +776,8 @@ export function SubsidyCalculator({
 
       <SummaryBox
         grantAmount={totalGrantAmount}
-        surchargeAmount={totalPriceAmount - totalGrantAmount}
-        finalAmount={totalPriceAmount}
+        surchargeAmount={totalSurchargeAmount}
+        finalAmount={totalGrantAmount + totalSurchargeAmount}
       />
 
       <ContactFormOZ
