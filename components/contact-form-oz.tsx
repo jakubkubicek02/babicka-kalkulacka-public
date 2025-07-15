@@ -317,6 +317,7 @@ export function ContactFormOZ({
           // Percentage bonuses only add to grant, not to price
           const bonusAmount = baseAmountForPercentage * (item.percentage / 100)
           totalBonusAmount += bonusAmount
+          // Don't add to bonusPriceAmount - percentage bonuses don't increase total price
         } else if (item.unit === "fixed") {
           // Fixed bonuses add to both price and grant
           totalBonusAmount += item.price

@@ -446,6 +446,7 @@ export function SubsidyCalculator({
             const selection = updatedSelections[item.id]
             if (selection?.selected) {
               if (item.unit === "percent" && item.percentage) {
+                // Percentage bonuses only add to grant amount, not to total price
                 bonusTotal += baseTotal * (item.percentage / 100)
               } else if (item.unit === "fixed") {
                 bonusTotal += item.price
@@ -523,6 +524,61 @@ export function SubsidyCalculator({
       })
     }
     // Don't auto-save for new users - only save when contact form is submitted
+  }
+
+  const calculateBonusAmounts = () => {
+    let totalBonusAmount = 0
+    let baseAmountForPercentage = 0
+    let bonusPriceAmount = 0 // Only for bonuses that add to price
+
+    // Calculate base amount (non-bonus items) for percentage calculation
+    allItems.forEach((item) => {
+      const selection = selections[item.id]
+
+      if (item.name.includes("Bonus") || item.name.includes("bonus")) {
+        return // Skip bonus items for base calculation
+      }
+
+      const shouldIncludeQuantityOnly =
+        item.isQuantityOnly &&
+        item.requiresParent &&
+        selections[item.requiresParent]?.selected &&
+        selection?.quantity > 0
+
+      if (selection?.selected || shouldIncludeQuantityOnly) {
+        const quantity = selection?.quantity || 1
+        baseAmountForPercentage += calculateItemAmount(item, quantity)
+      }
+    })
+
+    // Calculate bonus amounts
+    allItems.forEach((item) => {
+      const selection = selections[item.id]
+
+      if (selection?.selected && (item.name.includes("Bonus") || item.name.includes("bonus"))) {
+        if (item.unit === "percent" && item.percentage) {
+          // Percentage bonuses only add to grant, not to price
+          const bonusAmount = baseAmountForPercentage * (item.percentage / 100)
+          totalBonusAmount += bonusAmount
+          // Don't add to bonusPriceAmount - percentage bonuses don't increase total price
+        } else if (item.unit === "fixed") {
+          // Fixed bonuses add to both price and grant
+          totalBonusAmount += item.price
+          bonusPriceAmount += item.price
+        } else {
+          const quantity = selection.quantity || 1
+          const bonusAmount = calculateItemAmount(item, quantity)
+          totalBonusAmount += bonusAmount
+          bonusPriceAmount += bonusAmount
+        }
+      }
+    })
+
+    return {
+      totalBonusAmount,
+      baseAmountForPercentage,
+      bonusPriceAmount, // Only bonuses that should be added to total price
+    }
   }
 
   useEffect(() => {
