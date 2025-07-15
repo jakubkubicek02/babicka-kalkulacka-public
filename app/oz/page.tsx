@@ -206,7 +206,7 @@ export default function OZPage() {
         </div>
 
         <h1 className="font-exo text-green-700 text-center mb-6 text-3xl md:text-5xl font-bold">
-          Kalkulačka dotací - Nová zelená úsporám
+          Kalkulace - Oprav Dům Po Babičce
         </h1>
 
         {/* Welcome message for returning users */}
