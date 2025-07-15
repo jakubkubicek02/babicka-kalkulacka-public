@@ -288,7 +288,15 @@ export function ContactFormOZ({
 
     calculatorData.allItems.forEach((item) => {
       const selection = calculatorData.selections[item.id]
-      if (selection?.selected || (item.isQuantityOnly && selection?.quantity > 0)) {
+
+      // For quantity-only items, check if parent is selected AND quantity > 0
+      const shouldIncludeQuantityOnly =
+        item.isQuantityOnly &&
+        item.requiresParent &&
+        calculatorData.selections[item.requiresParent]?.selected &&
+        selection?.quantity > 0
+
+      if (selection?.selected || shouldIncludeQuantityOnly) {
         const quantity = selection.quantity || 1
         const grantAmount = calculateItemAmount(item, quantity)
         const surchargeAmount = calculateItemSurcharge(item, quantity)
