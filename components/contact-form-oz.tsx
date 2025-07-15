@@ -639,10 +639,6 @@ export function ContactFormOZ({
                   <p className="text-sm text-orange-800 font-medium">
                     ✅ Vybráno: <strong>{consulturaProcenta}% z dotace</strong>
                   </p>
-                  <p className="text-xs text-orange-600 mt-1">
-                    Odměna Consultury:{" "}
-                    {formatAmount(Math.round(calculatorData.totals.grantAmount * (consulturaProcenta / 100)))}
-                  </p>
                 </div>
               )}
             </div>
