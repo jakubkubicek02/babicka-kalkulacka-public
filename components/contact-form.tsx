@@ -276,6 +276,7 @@ export function ContactForm({
   const calculateBonusAmounts = () => {
     let totalBonusAmount = 0
     let baseAmountForPercentage = 0
+    let bonusPriceAmount = 0 // Only for bonuses that add to price
 
     // Calculate base amount (non-bonus items) for percentage calculation
     calculatorData.allItems.forEach((item) => {
@@ -303,13 +304,18 @@ export function ContactForm({
 
       if (selection?.selected && (item.name.includes("Bonus") || item.name.includes("bonus"))) {
         if (item.unit === "percent" && item.percentage) {
+          // Percentage bonuses only add to grant, not to price
           const bonusAmount = baseAmountForPercentage * (item.percentage / 100)
           totalBonusAmount += bonusAmount
         } else if (item.unit === "fixed") {
+          // Fixed bonuses add to both price and grant
           totalBonusAmount += item.price
+          bonusPriceAmount += item.price
         } else {
           const quantity = selection.quantity || 1
-          totalBonusAmount += calculateItemAmount(item, quantity)
+          const bonusAmount = calculateItemAmount(item, quantity)
+          totalBonusAmount += bonusAmount
+          bonusPriceAmount += bonusAmount
         }
       }
     })
@@ -317,6 +323,7 @@ export function ContactForm({
     return {
       totalBonusAmount,
       baseAmountForPercentage,
+      bonusPriceAmount, // Only bonuses that should be added to total price
     }
   }
 
@@ -338,6 +345,7 @@ export function ContactForm({
         const quantity = selection.quantity || 1
         let grantAmount = 0
         let surchargeAmount = 0
+        let priceAmount = 0
 
         // Special handling for percentage bonuses
         if (
@@ -347,12 +355,14 @@ export function ContactForm({
         ) {
           grantAmount = bonusInfo.baseAmountForPercentage * (item.percentage / 100)
           surchargeAmount = 0
+          priceAmount = 0 // Percentage bonuses don't add to price
         } else {
           grantAmount = calculateItemAmount(item, quantity)
           surchargeAmount = calculateItemSurcharge(item, quantity)
+          priceAmount = grantAmount + surchargeAmount
         }
 
-        const totalAmount = grantAmount + surchargeAmount
+        const totalAmount = priceAmount
         const unitDisplay = getUnitDisplay(item.unit)
 
         let line = ""
@@ -377,6 +387,7 @@ export function ContactForm({
             line = `${displayName} - ${formatAmount(grantAmount)} - ${formatAmount(grantAmount)} - -`
           }
         } else if (item.unit === "percent") {
+          // For percentage bonuses, show 0 in price column
           line = `${displayName} - ${item.percentage}% - ${formatAmount(grantAmount)} - ${formatAmount(surchargeAmount)}`
         } else {
           if (shouldShowFullPrice) {
