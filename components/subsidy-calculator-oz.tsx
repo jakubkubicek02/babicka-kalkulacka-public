@@ -216,6 +216,11 @@ export function SubsidyCalculator({
     // Use new pricing structure
     const grant = itemPricing.grant || 0
 
+    // Special handling for rekuperace - fixed grant regardless of quantity
+    if (item.name === "Rekuperace") {
+      return grant // Always return 90,000 regardless of quantity
+    }
+
     // Special handling for venkovní žaluzie - calculate grant based on window size
     if (item.name === "Venkovní žaluzie") {
       const windowSizeSelection = selections["velikost-oken"]
