@@ -745,7 +745,7 @@ export function SubsidyCalculator({
   const calculatorData = {
     selections,
     totals: {
-      grantAmount: totalAmount,
+      grantAmount: totalAmount + (categoryTotals.bonusy || 0),
       surchargeAmount: totalSurcharge,
       finalAmount: totalAmount + totalSurcharge,
       excessAmount,
@@ -777,7 +777,7 @@ export function SubsidyCalculator({
       <TotalSection totalAmount={totalAmount} excessAmount={excessAmount} />
 
       <SummaryBox
-        grantAmount={totalAmount}
+        grantAmount={totalAmount + (categoryTotals.bonusy || 0)}
         surchargeAmount={totalSurcharge}
         finalAmount={totalAmount + totalSurcharge}
       />
