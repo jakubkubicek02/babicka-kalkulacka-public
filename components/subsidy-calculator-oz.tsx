@@ -559,8 +559,8 @@ export function SubsidyCalculator({
         selections: updatedSelections,
         totals: {
           grantAmount: baseGrantTotal + bonusGrantAmount,
-          surchargeAmount: baseSurcharge,
-          finalAmount: basePriceTotal + bonusPriceAmount,
+          surchargeAmount: basePriceTotal + bonusPriceAmount - (baseGrantTotal + bonusGrantAmount), // Cena - Dotace
+          finalAmount: basePriceTotal + bonusPriceAmount, // Celková cena
           excessAmount: totalExcess,
         },
         selectedMunicipality,
@@ -786,8 +786,8 @@ export function SubsidyCalculator({
     selections,
     totals: {
       grantAmount: totalGrantAmount,
-      surchargeAmount: totalSurcharge,
-      finalAmount: totalPriceAmount,
+      surchargeAmount: totalPriceAmount - totalGrantAmount, // Doplatek = Cena - Dotace
+      finalAmount: totalPriceAmount, // Celková cena
       excessAmount,
     },
     allItems,
@@ -816,7 +816,11 @@ export function SubsidyCalculator({
 
       <TotalSection totalAmount={totalGrantAmount} excessAmount={excessAmount} />
 
-      <SummaryBox grantAmount={totalGrantAmount} surchargeAmount={totalSurcharge} finalAmount={totalPriceAmount} />
+      <SummaryBox
+        grantAmount={totalGrantAmount}
+        surchargeAmount={totalPriceAmount - totalGrantAmount}
+        finalAmount={totalPriceAmount}
+      />
 
       <ContactFormOZ
         calculatorData={calculatorData}
