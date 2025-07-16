@@ -351,16 +351,17 @@ export function ContactForm({
         // Check if this is a bonus item
         const isBonusItem = item.name.includes("Bonus") || item.name.includes("bonus")
 
-        // Special handling for percentage bonuses
-        if (item.unit === "percent" && item.percentage && isBonusItem) {
-          grantAmount = bonusInfo.baseAmountForPercentage * (item.percentage / 100)
-          surchargeAmount = -grantAmount // Negative surcharge for bonuses
-          priceAmount = 0 // Percentage bonuses don't add to price
-        } else if (isBonusItem) {
-          grantAmount = calculateItemAmount(item, quantity)
-          surchargeAmount = -grantAmount // Negative surcharge for bonuses
-          priceAmount = 0
+        if (isBonusItem) {
+          // For ALL bonus items, regardless of unit type
+          if (item.unit === "percent" && item.percentage) {
+            grantAmount = bonusInfo.baseAmountForPercentage * (item.percentage / 100)
+          } else {
+            grantAmount = calculateItemAmount(item, quantity)
+          }
+          surchargeAmount = -grantAmount // Always negative for bonuses
+          priceAmount = 0 // Bonuses never add to total price
         } else {
+          // For regular items
           grantAmount = calculateItemAmount(item, quantity)
           surchargeAmount = calculateItemSurcharge(item, quantity)
           priceAmount = grantAmount + surchargeAmount
@@ -383,14 +384,14 @@ export function ContactForm({
           isBonusItem ||
           item.isAutomatic
 
-        if (item.unit === "fixed") {
+        if (item.unit === "fixed" || isBonusItem) {
           if (shouldShowFullPrice) {
             line = `${displayName} - ${formatAmount(totalAmount)} - ${formatAmount(grantAmount)} - ${formatAmount(surchargeAmount)}`
           } else {
             line = `${displayName} - ${formatAmount(grantAmount)} - ${formatAmount(grantAmount)} - -`
           }
-        } else if (item.unit === "percent") {
-          // For percentage bonuses, show negative amount in surcharge column
+        } else if (item.unit === "percent" && !isBonusItem) {
+          // For percentage items that are NOT bonuses
           line = `${displayName} - ${item.percentage}% - ${formatAmount(grantAmount)} - ${formatAmount(surchargeAmount)}`
         } else {
           if (shouldShowFullPrice) {
