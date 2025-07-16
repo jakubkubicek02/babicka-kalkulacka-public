@@ -348,12 +348,11 @@ export function ContactForm({
         let surchargeAmount = 0
         let priceAmount = 0
 
+        // Check if this is a bonus item
+        const isBonusItem = item.name.includes("Bonus") || item.name.includes("bonus")
+
         // Special handling for percentage bonuses
-        if (
-          item.unit === "percent" &&
-          item.percentage &&
-          (item.name.includes("Bonus") || item.name.includes("bonus"))
-        ) {
+        if (item.unit === "percent" && item.percentage && isBonusItem) {
           grantAmount = bonusInfo.baseAmountForPercentage * (item.percentage / 100)
           surchargeAmount = 0
           priceAmount = 0 // Percentage bonuses don't add to price
@@ -363,7 +362,7 @@ export function ContactForm({
           priceAmount = grantAmount + surchargeAmount
         }
 
-        const totalAmount = priceAmount
+        const totalAmount = isBonusItem ? 0 : priceAmount // For bonuses, always show 0 as total price
         const unitDisplay = getUnitDisplay(item.unit)
 
         let line = ""
@@ -377,8 +376,7 @@ export function ContactForm({
         const shouldShowFullPrice =
           formData.interest !== "Chci vyřídit dotaci i realizaci" ||
           isSelectedForImplementation ||
-          item.name.includes("Bonus") ||
-          item.name.includes("bonus") ||
+          isBonusItem ||
           item.isAutomatic
 
         if (item.unit === "fixed") {
