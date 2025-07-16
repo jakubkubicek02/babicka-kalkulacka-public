@@ -286,14 +286,19 @@ export function ContactFormOZ({
   const calculateBonusAmounts = () => {
     let totalBonusAmount = 0
     let baseAmountForPercentage = 0
-    let bonusPriceAmount = 0 // Only for bonuses that add to price
+    let bonusPriceAmount = 0
 
-    // Calculate base amount (non-bonus items) for percentage calculation
+    // Calculate base amount (ALL items including non-percentage bonuses) for percentage calculation
     calculatorData.allItems.forEach((item) => {
       const selection = calculatorData.selections[item.id]
 
-      if (item.name.includes("Bonus") || item.name.includes("bonus")) {
-        return // Skip bonus items for base calculation
+      // Skip percentage bonuses from base calculation (they will be calculated separately)
+      if (
+        (item.name.includes("Bonus") || item.name.includes("bonus") || (item.id && item.id.startsWith("bonus-"))) &&
+        item.unit === "percent" &&
+        item.percentage
+      ) {
+        return
       }
 
       const shouldIncludeQuantityOnly =
@@ -312,9 +317,12 @@ export function ContactFormOZ({
     calculatorData.allItems.forEach((item) => {
       const selection = calculatorData.selections[item.id]
 
-      if (selection?.selected && (item.name.includes("Bonus") || item.name.includes("bonus"))) {
+      if (
+        selection?.selected &&
+        (item.name.includes("Bonus") || item.name.includes("bonus") || (item.id && item.id.startsWith("bonus-")))
+      ) {
         if (item.unit === "percent" && item.percentage) {
-          // Percentage bonuses only add to grant, not to price
+          // Percentage bonuses calculated from base amount (which includes fixed bonuses)
           const bonusAmount = baseAmountForPercentage * (item.percentage / 100)
           totalBonusAmount += bonusAmount
           // Don't add to bonusPriceAmount - percentage bonuses don't increase total price
@@ -334,7 +342,7 @@ export function ContactFormOZ({
     return {
       totalBonusAmount,
       baseAmountForPercentage,
-      bonusPriceAmount, // Only bonuses that should be added to total price
+      bonusPriceAmount,
     }
   }
 
