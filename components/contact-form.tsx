@@ -354,8 +354,12 @@ export function ContactForm({
         // Special handling for percentage bonuses
         if (item.unit === "percent" && item.percentage && isBonusItem) {
           grantAmount = bonusInfo.baseAmountForPercentage * (item.percentage / 100)
-          surchargeAmount = 0
+          surchargeAmount = -grantAmount // Negative surcharge for bonuses
           priceAmount = 0 // Percentage bonuses don't add to price
+        } else if (isBonusItem) {
+          grantAmount = calculateItemAmount(item, quantity)
+          surchargeAmount = -grantAmount // Negative surcharge for bonuses
+          priceAmount = 0
         } else {
           grantAmount = calculateItemAmount(item, quantity)
           surchargeAmount = calculateItemSurcharge(item, quantity)
@@ -386,7 +390,7 @@ export function ContactForm({
             line = `${displayName} - ${formatAmount(grantAmount)} - ${formatAmount(grantAmount)} - -`
           }
         } else if (item.unit === "percent") {
-          // For percentage bonuses, show 0 in price column
+          // For percentage bonuses, show negative amount in surcharge column
           line = `${displayName} - ${item.percentage}% - ${formatAmount(grantAmount)} - ${formatAmount(surchargeAmount)}`
         } else {
           if (shouldShowFullPrice) {
