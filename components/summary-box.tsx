@@ -4,13 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface SummaryBoxProps {
   grantAmount: number
-  surchargeAmount: number
-  finalAmount: number
+  totalItemPrice: number // Cena pouze z položek (bez bonusů)
 }
 
-export function SummaryBox({ grantAmount, surchargeAmount, finalAmount }: SummaryBoxProps) {
+export function SummaryBox({ grantAmount = 0, totalItemPrice = 0 }: SummaryBoxProps) {
+  // Ensure we have valid numbers
+  const validGrantAmount = typeof grantAmount === "number" && !isNaN(grantAmount) ? grantAmount : 0
+  const validTotalItemPrice = typeof totalItemPrice === "number" && !isNaN(totalItemPrice) ? totalItemPrice : 0
+
+  // Doplatek = Celková cena položek - Celková dotace
+  const surchargeAmount = Math.max(0, validTotalItemPrice - validGrantAmount)
+
   const formatAmount = (amount: number) => {
-    return amount.toLocaleString("cs-CZ") + " Kč"
+    const validAmount = typeof amount === "number" && !isNaN(amount) ? amount : 0
+    return validAmount.toLocaleString("cs-CZ") + " Kč"
   }
 
   return (
@@ -22,7 +29,7 @@ export function SummaryBox({ grantAmount, surchargeAmount, finalAmount }: Summar
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-white rounded-lg border border-green-100 shadow-sm">
             <div className="text-sm font-medium text-gray-600 mb-2">Celková dotace</div>
-            <div className="text-2xl font-bold text-green-700">{formatAmount(grantAmount)}</div>
+            <div className="text-2xl font-bold text-green-700">{formatAmount(validGrantAmount)}</div>
           </div>
 
           <div className="text-center p-4 bg-white rounded-lg border border-blue-100 shadow-sm">
@@ -32,7 +39,7 @@ export function SummaryBox({ grantAmount, surchargeAmount, finalAmount }: Summar
 
           <div className="text-center p-4 bg-white rounded-lg border border-purple-100 shadow-sm">
             <div className="text-sm font-medium text-gray-600 mb-2">Celková cena</div>
-            <div className="text-2xl font-bold text-purple-700">{formatAmount(finalAmount)}</div>
+            <div className="text-2xl font-bold text-purple-700">{formatAmount(validTotalItemPrice)}</div>
           </div>
         </div>
 
@@ -40,7 +47,8 @@ export function SummaryBox({ grantAmount, surchargeAmount, finalAmount }: Summar
           <div className="text-center">
             <div className="text-sm font-medium text-green-800 mb-1">Úspora díky dotaci</div>
             <div className="text-xl font-bold text-green-900">
-              {formatAmount(grantAmount)} ({Math.round((grantAmount / finalAmount) * 100)}%)
+              {formatAmount(validGrantAmount)} (
+              {validTotalItemPrice > 0 ? Math.round((validGrantAmount / validTotalItemPrice) * 100) : 0}%)
             </div>
           </div>
         </div>
