@@ -349,7 +349,11 @@ export function ContactForm({
         let priceAmount = 0
 
         // Check if this is a bonus item
-        const isBonusItem = item.name.includes("Bonus") || item.name.includes("bonus")
+        const isBonusItem =
+          item.name.includes("Bonus") ||
+          item.name.includes("bonus") ||
+          item.id?.includes("bonus") ||
+          item.name === "Zateplení + zdroj tepla"
 
         if (isBonusItem) {
           // For ALL bonus items, regardless of unit type
