@@ -353,7 +353,7 @@ export function ContactForm({
           item.name.includes("Bonus") ||
           item.name.includes("bonus") ||
           item.id?.includes("bonus") ||
-          item.name === "Zateplení + zdroj tepla"
+          (item.id && item.id.startsWith("bonus-"))
 
         if (isBonusItem) {
           // For ALL bonus items, regardless of unit type
